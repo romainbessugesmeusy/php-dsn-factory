@@ -1,0 +1,14 @@
+{
+    "name": "romainbessugesmeusy/php-dsn-factory",
+    "description": "DSN Factory for PDO",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Romain Bessuges",
+            "email": "romainbessuges@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "RBM": "lib/" }
+    }
+}
