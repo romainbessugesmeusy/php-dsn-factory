@@ -36,10 +36,10 @@ namespace RBM\Utils;
 class DsnFactory
 {
 
-    const MYSQL = 'mysql';
+    const MYSQL        = 'mysql';
     const MYSQL_SOCKET = 'mysql_socket';
     protected static $_schemes = [
-        self::MYSQL => "mysql:host=<host>;port=<port>;dbname=<dbname>",
+        self::MYSQL        => "mysql:host=<host>;port=<port>;dbname=<dbname>",
         self::MYSQL_SOCKET => "mysql:unix_socket=<socket>;dbname=<dbname>",
     ];
     /** @var string */
@@ -106,7 +106,7 @@ class DsnFactory
     {
         try {
             $this->generateDsnString();
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             return "DSN GENERATION ERROR : {$e->getMessage()}";
         }
         return $this->_dsnString;
@@ -117,12 +117,19 @@ class DsnFactory
      */
     protected function generateDsnString()
     {
-        $this->_dsnString = preg_replace_callback('#<(\w+)>#', function ($matches) {
+        $missingParameters = array();
+
+        $this->_dsnString = preg_replace_callback('#<(\w+)>#', function ($matches) use ($missingParameters) {
             $keyword = $matches[1];
-            if(!isset($this->_attributes[$keyword])){
-                throw new \Exception("Required attribute '{$keyword}' was not specified");
+            if (!isset($this->_attributes[$keyword])) {
+                $missingParameters[] = $keyword;
+                return "";
             }
             return $this->_attributes[$keyword];
         }, $this->_scheme);
+
+        if (!empty($missingParameters)) {
+            throw new \Exception("Missing mandatory parameters : " . PHP_EOL . implode(PHP_EOL, $missingParameters));
+        }
     }
 }
