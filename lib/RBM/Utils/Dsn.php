@@ -33,7 +33,7 @@
 
 namespace RBM\Utils;
 
-class DsnFactory
+class Dsn
 {
 
     const MYSQL        = 'mysql';
