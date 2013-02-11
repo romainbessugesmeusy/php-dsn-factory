@@ -38,37 +38,91 @@ class DsnFactory
 
     const MYSQL = 'mysql';
     const MYSQL_SOCKET = 'mysql_socket';
-
     protected static $_schemes = [
         self::MYSQL => "mysql:host=<host>;port=<port>;dbname=<dbname>",
         self::MYSQL_SOCKET => "mysql:unix_socket=<socket>;dbname=<dbname>",
     ];
-
+    /** @var string */
+    protected $_driver;
+    /** @var string */
     protected $_scheme;
-
+    /** @var array */
     protected $_attributes;
+    /** @var string */
+    protected $_dsnString;
 
+    /**
+     * @param $driver
+     * @param array $attributes
+     */
     public function __construct($driver, $attributes = array())
+    {
+        $this->setDriver($driver);
+        $this->setAttributes($attributes);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDriver()
+    {
+        return $this->_driver;
+    }
+
+    /**
+     * @param $driver
+     * @throws \Exception
+     */
+    public function setDriver($driver)
     {
         if (!isset(self::$_schemes[$driver])) {
             throw new \Exception("Unknown driver '{$driver}'");
         }
 
+        $this->_driver = $driver;
         $this->_scheme = self::$_schemes[$driver];
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->_attributes;
+    }
+
+    /**
+     * @param $attributes
+     */
+    public function setAttributes($attributes)
+    {
         $this->_attributes = $attributes;
     }
 
-
-    public function getDsn()
+    /**
+     * @return string
+     */
+    public function __toString()
     {
-        $dsn = preg_replace_callback('#<(\w+)>#', function ($matches) {
+        try {
+            $this->generateDsnString();
+        } catch (\Exception $e){
+            return "DSN GENERATION ERROR : {$e->getMessage()}";
+        }
+        return $this->_dsnString;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function generateDsnString()
+    {
+        $this->_dsnString = preg_replace_callback('#<(\w+)>#', function ($matches) {
             $keyword = $matches[1];
             if(!isset($this->_attributes[$keyword])){
                 throw new \Exception("Required attribute '{$keyword}' was not specified");
             }
             return $this->_attributes[$keyword];
         }, $this->_scheme);
-
-        return $dsn;
     }
 }
