@@ -9,6 +9,6 @@
         }
     ],
     "autoload": {
-        "psr-0": { "RBM\\Utils": "lib/RBM/Utils" }
+        "psr-0": { "RBM": "lib/." }
     }
 }
