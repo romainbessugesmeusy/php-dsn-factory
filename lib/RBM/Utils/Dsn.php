@@ -36,16 +36,18 @@ namespace RBM\Utils;
 class Dsn
 {
 
-    const MYSQL            = 'mysql';
-    const MYSQL_SOCKET     = 'mysql_socket';
-    const SQL_SERVER_DBLIB = 'sql_server_dblib';
-    const SQL_SERVER       = 'sql_server';
+    const MYSQL        = 'mysql';
+    const MYSQL_SOCKET = 'mysql_socket';
+    const DBLIB        = 'dblib';
+    const SQL_SERVER   = 'sql_server';
+    const PGSQL        = 'pgsql';
 
     protected static $_schemes = array(
         self::MYSQL        => "mysql:host=<host>;port=<port>;dbname=<dbname>",
         self::MYSQL_SOCKET => "mysql:unix_socket=<socket>;dbname=<dbname>",
         self::SQL_SERVER   => "sqlsrv:Server=<host>;Database=<dbname>",
-        self::SQL_SERVER_DBLIB   => "dblib:host=<host>:<port>;dbname=<dbname>;charset=UTF-8",
+        self::DBLIB        => "dblib:host=<host>:<port>;dbname=<dbname>;charset=<encoding>",
+        self::PGSQL        => "pgsql:host=<host>;port=<port>;dbname=<dbname>;user=<user>;password=<password>",
     );
 
     /** @var string */
