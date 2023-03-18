@@ -1,6 +1,6 @@
 {
     "name": "romainbessugesmeusy/php-dsn-factory",
-    "description": "DSN Factory for PDO",
+    "description": "DSN (Data Source Name) Factory for PDO",
     "minimum-stability": "dev",
     "authors": [
         {
