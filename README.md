@@ -1,4 +1,4 @@
-DSN Factory
+DSN (Data Source Name) Factory
 =========
 
 Tired of going on http://php.net because you can't remember how's constructed the DSN you need ?
